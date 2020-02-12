@@ -1,26 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Header } from "./components";
+import { Footer } from "./components";
+import { chooseContainers } from './components';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const headers=["company","user"];
+
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.setHeaderName=this.setHeaderName.bind(this);
+    this.state={
+      headerName : "company"
+    };
+  }
+
+  setHeaderName(name){
+    console.log(name);
+    this.setState({headerName : name});
+    console.log(this.state);
+  }  
+
+  render(){
+    return (
+      <div className="App">
+        <Header name={this.state.headerName} setHeaderName={this.setHeaderName} headers={headers}/>
+        {chooseContainers(this.state.headerName)}
+        <Footer/>
+      </div>
+      );
+    }
 }
 
 export default App;
