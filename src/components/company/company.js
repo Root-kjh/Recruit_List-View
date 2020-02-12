@@ -1,30 +1,15 @@
 import React from "react";
-import axios from "../../api/axios";
-class Company extends React.Component{
 
-    constructor(props){
-        super(props);
-        this.state={
-            Company : []
-        };
-    }
+const Company=({company})=>(
+    <div>
+        <ul>
+            {company.map((com,i)=>{
+                return(<li key={i}>
+                    {com.companyName}
+                </li>) 
+            })}
+        </ul>
+    </div>
+)
 
-    function=async text=>{
-        const response=await axios.get('/company/');
-
-        this.setState({
-            Company : response.data.result
-        });
-    }
-
-    getCompany();
-
-    render(){
-        return(
-            <div>
-            {this.responseOK && await this.response.data}
-            </div>
-        )
-    }
-}
 export default Company;
