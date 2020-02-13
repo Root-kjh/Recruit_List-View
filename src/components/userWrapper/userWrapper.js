@@ -1,5 +1,5 @@
 import React from "react";
-import { signIn } from "../";
+import { SignIn } from "../";
 
 class  UserWrapper extends React.Component{
 
@@ -38,7 +38,7 @@ class  UserWrapper extends React.Component{
         }else{
             return(
                 <div>
-                    <signIn/>
+                    <SignIn/>
                 </div>
             );
         }
