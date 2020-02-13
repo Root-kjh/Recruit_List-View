@@ -1,39 +1,35 @@
 import React from "react";
-import AppBar from 'material-ui/AppBar';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
 class Header extends React.Component{
 
     constructor(props){
         super(props);
-        this.setHeader=this.setHeader.bind(this);
+        this.handleChange=this.handleChange.bind(this);
         this.state={
-            open:false
+            value:0
         };
     }
 
-    setHeader(e){
-        this.props.setHeaderName(e.target.textContent);
-    }
-
-    handleToggle(){
-        console.log("test");
+    handleChange(e,value){
+        this.setState({value : value});
+        this.props.setHeaderName(this.props.headers[value]);
     }
 
     render(){
       
-        const headers=this.props.headers.map((header)=>
-        <li onClick={this.setHeader}>{header}</li>);
+        const headers=this.props.headers.map((header,index)=>
+        <Tab label={header}/>);
 
         return(
-            <MuiThemeProvider>
-                <AppBar
-                    title={this.props.name}
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
-                    onRightIconButtonClick={console.log("Test2")}
-                    showMenuIconButton={true}
-                    children={this.headers}
-                />
-            </MuiThemeProvider>
+            <div>
+                <AppBar position="static">
+                    <Tabs value={this.state.value} onChange={this.handleChange}>
+                        {headers}
+                    </Tabs>
+                </AppBar>
+            </div>
         );
     }
 }
