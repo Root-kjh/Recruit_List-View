@@ -3,7 +3,7 @@ import { CompanyWrapper } from '../../components';
 
 const Company=()=>(
     <div>
-        <CompanyWrapper isUser={false}/>
+        <CompanyWrapper/>
     </div>
 )
 

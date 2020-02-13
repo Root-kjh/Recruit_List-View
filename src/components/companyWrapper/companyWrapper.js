@@ -1,5 +1,4 @@
 import React from "react";
-import { Checkbox } from "react-md";
 import { Company } from "../";
 import { CompanyInfo } from "../";
 import axios from 'axios';

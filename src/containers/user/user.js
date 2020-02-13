@@ -1,8 +1,9 @@
 import React from "react";
+import { UserWrapper } from "../../components";
 
 const User=()=>(
     <div>
-        User
+        <UserWrapper/>
     </div>
 )
 

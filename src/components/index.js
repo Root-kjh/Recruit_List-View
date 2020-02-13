@@ -4,7 +4,8 @@ import chooseContainers from "./chooseContainers/chooseContainers";
 import CompanyWrapper from "./companyWrapper/companyWrapper";
 import Company from "./company/company";
 import CompanyInfo from "./companyInfo/companyInfo";
-import userWrapper from "./userWrapper/userWrapper";
+import UserWrapper from "./userWrapper/userWrapper";
+import signIn from "./signIn/signin";
 export {
     Header,
     Footer,
@@ -12,5 +13,6 @@ export {
     CompanyWrapper,
     Company,
     CompanyInfo,
-    userWrapper
+    UserWrapper,
+    signIn
 };

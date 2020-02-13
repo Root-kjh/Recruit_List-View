@@ -15,9 +15,7 @@ class App extends React.Component {
   }
 
   setHeaderName(name){
-    console.log(name);
     this.setState({headerName : name});
-    console.log(this.state);
   }  
 
   render(){
