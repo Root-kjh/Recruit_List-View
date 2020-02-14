@@ -1,6 +1,6 @@
 import React from "react";
 
-const CompanyInfo=(props)=>(
+const CompanyInfo=({company})=>(
     <div>
         CompanyInfo
     </div>
