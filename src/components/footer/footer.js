@@ -8,7 +8,7 @@ import AlternateEmailOutlinedIcon from '@material-ui/icons/AlternateEmailOutline
 
 const useStyles = makeStyles({
     root: {
-        position:"absolute",
+        position:"fixed",
         left:"40%",
         bottom:"0"
     },

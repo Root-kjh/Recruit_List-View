@@ -1,12 +1,12 @@
 import React from "react";
 import { Company } from "../";
-import { CompanyInfo } from "../";
 import axios from 'axios';
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import Pagination from '@material-ui/lab/Pagination';
 let pageElement=null;
 
 const useStyles = {
@@ -63,7 +63,7 @@ class  CompanyWrapper extends React.Component{
 
     searchCompany() {
         axios.get(this.getRequestURI()).then(Response=>{this.setState({company : Response.data});});
-        pageElement=(<div><button>prev Page</button>{this.state.page}<button>next Page</button></div>);
+        pageElement=(<Pagination style={{marginBottom:"100px"}} count={this.state.page+2} color="primary" />);
     }
 
     paging(page){
@@ -104,7 +104,6 @@ class  CompanyWrapper extends React.Component{
                 </Button>
             </div>
             <Company company={this.state.company}/>
-            <CompanyInfo company={this.state.company}/>
             {pageElement}
         </div>
     );
