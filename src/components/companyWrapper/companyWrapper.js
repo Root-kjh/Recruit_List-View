@@ -6,7 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
-import Pagination from '@material-ui/lab/Pagination';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import IconButton from '@material-ui/core/IconButton';
+
 let pageElement=null;
 
 const useStyles = {
@@ -33,6 +36,8 @@ class  CompanyWrapper extends React.Component{
     constructor(props){
         super(props);
         this.searchCompany=this.searchCompany.bind(this);
+        this.pageDown=this.pageDown.bind(this);
+        this.pageUp=this.pageUp.bind(this);
         this.state={
             CompanyName : "",
             isRecruit : false,
@@ -50,20 +55,32 @@ class  CompanyWrapper extends React.Component{
 
     getRequestURI(){
         if(this.state.CompanyName.length>0){
-            return("http://127.0.0.1:8080/company/search/companyname/"+this.state.CompanyName+"/page/0")
+            return("http://13.125.62.254:8080/company/search/companyname/"+this.state.CompanyName+"/page/0")
         }
-        return("http://127.0.0.1:8080/company/is-recruit/"
+        return("http://13.125.62.254:8080/company/is-recruit/"
         +this.state.isRecruit+
         "/employeesnum-min/"+this.state.employeesNum+
         "/foundingyear-max/"+this.state.foundingYear+
         "/page/"+this.state.page);
     }
 
+    pageDown(){
+        this.setState({
+            page: this.state.page-1
+        });
+        this.searchCompany();
+    }
 
+    pageUp(){
+        this.setState({
+            page: this.state.page+1
+        });
+        this.searchCompany();
+    }
 
     searchCompany() {
-        axios.get(this.getRequestURI()).then(Response=>{this.setState({company : Response.data});});
-        pageElement=(<Pagination style={{marginBottom:"100px"}} count={this.state.page+2} color="primary" />);
+        axios.get(this.getRequestURI()).then(Response=>{pageElement=(<div style={{width:"106px", margin:"20px auto",marginBottom:"100px"}}>{this.state.page>0 && <IconButton onClick={this.pageDown}><ArrowBackIosIcon/></IconButton >}{this.state.page}<IconButton onClick={this.pageUp}><ArrowForwardIosIcon/></IconButton></div>);
+        this.setState({company : Response.data});});
     }
 
     paging(page){

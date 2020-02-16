@@ -9,7 +9,7 @@ const Company=({company})=>(
     <div>
         {company.map((com,i)=>{
             return(<ExpansionPanel key={i}>
-                <ExpansionPanelSummary expandIcon={<expandIcon/>}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography>{com.companyName}</Typography>
                 </ExpansionPanelSummary>
             </ExpansionPanel>) 

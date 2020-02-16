@@ -21,7 +21,7 @@ class Header extends React.Component{
     render(){
       
         const headers=this.props.headers.map((header,index)=>
-        <Tab label={header}/>);
+        <Tab key={index} label={header}/>);
 
         return(
             <div>

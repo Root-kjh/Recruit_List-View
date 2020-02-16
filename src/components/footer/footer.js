@@ -9,7 +9,9 @@ import AlternateEmailOutlinedIcon from '@material-ui/icons/AlternateEmailOutline
 const useStyles = makeStyles({
     root: {
         position:"fixed",
-        left:"40%",
+        left:"0",
+        right:"0",
+        margin:"0 auto",
         bottom:"0"
     },
     navTab:{
