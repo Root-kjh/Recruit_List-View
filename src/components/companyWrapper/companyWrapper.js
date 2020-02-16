@@ -36,8 +36,8 @@ class  CompanyWrapper extends React.Component{
     constructor(props){
         super(props);
         this.searchCompany=this.searchCompany.bind(this);
-        this.pageDown=this.pageDown.bind(this);
-        this.pageUp=this.pageUp.bind(this);
+        this.setPage=this.setPage.bind(this);
+        this.clickSearchButton=this.clickSearchButton.bind(this);
         this.state={
             CompanyName : "",
             isRecruit : false,
@@ -49,13 +49,12 @@ class  CompanyWrapper extends React.Component{
     }
 
     componentDidMount(){
-        this.setState({page : 0});
         pageElement=null;
     }
 
     getRequestURI(){
         if(this.state.CompanyName.length>0){
-            return("http://13.125.62.254:8080/company/search/companyname/"+this.state.CompanyName+"/page/0")
+            return("http://13.125.62.254:8080/company/search/companyname/"+this.state.CompanyName+"/page/"+this.state.page)
         }
         return("http://13.125.62.254:8080/company/is-recruit/"
         +this.state.isRecruit+
@@ -64,27 +63,24 @@ class  CompanyWrapper extends React.Component{
         "/page/"+this.state.page);
     }
 
-    pageDown(){
+    setPage(pg){
         this.setState({
-            page: this.state.page-1
+            page:pg
+        },function(){
+            this.searchCompany();
         });
-        this.searchCompany();
-    }
-
-    pageUp(){
-        this.setState({
-            page: this.state.page+1
-        });
-        this.searchCompany();
     }
 
     searchCompany() {
-        axios.get(this.getRequestURI()).then(Response=>{pageElement=(<div style={{width:"106px", margin:"20px auto",marginBottom:"100px"}}>{this.state.page>0 && <IconButton onClick={this.pageDown}><ArrowBackIosIcon/></IconButton >}{this.state.page}<IconButton onClick={this.pageUp}><ArrowForwardIosIcon/></IconButton></div>);
+        axios.get(this.getRequestURI()).then(Response=>{pageElement=(<div style={{width:"106px", margin:"20px auto",marginBottom:"100px"}}>{this.state.page>0 && <IconButton onClick={this.setPage.bind(this,this.state.page-1)}><ArrowBackIosIcon/></IconButton >}{this.state.page+1}<IconButton onClick={this.setPage.bind(this,this.state.page+1)}><ArrowForwardIosIcon/></IconButton></div>);
         this.setState({company : Response.data});});
     }
 
-    paging(page){
-        this.setState({page : {page}});
+    clickSearchButton(){
+        this.setState({
+            page:0
+        });
+        this.searchCompany();
     }
 
     handleChange=(e)=>{
@@ -116,7 +112,7 @@ class  CompanyWrapper extends React.Component{
                     }
                     label="채용 진행중"
                 />
-                <Button variant="contained" style={{float:"right",marginRight:"30px"}} color="primary" onClick={this.searchCompany}>
+                <Button variant="contained" style={{float:"right",marginRight:"30px"}} color="primary" onClick={this.clickSearchButton}>
                     검색
                 </Button>
             </div>
