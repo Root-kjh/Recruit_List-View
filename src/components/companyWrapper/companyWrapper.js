@@ -72,7 +72,9 @@ class  CompanyWrapper extends React.Component{
     }
 
     searchCompany() {
-        axios.get(this.getRequestURI()).then(Response=>{pageElement=(<div style={{width:"106px", margin:"20px auto",marginBottom:"100px"}}>{this.state.page>0 && <IconButton onClick={this.setPage.bind(this,this.state.page-1)}><ArrowBackIosIcon/></IconButton >}{this.state.page+1}<IconButton onClick={this.setPage.bind(this,this.state.page+1)}><ArrowForwardIosIcon/></IconButton></div>);
+        axios.get(this.getRequestURI()).then(Response=>{pageElement=(
+        <div style={{width:"106px", margin:"20px auto",marginBottom:"100px"}}>{this.state.page>0 && <IconButton onClick={this.setPage.bind(this,this.state.page-1)}><ArrowBackIosIcon/></IconButton >}
+        {this.state.page+1}{Response.data.length===20 && <IconButton onClick={this.setPage.bind(this,this.state.page+1)}><ArrowForwardIosIcon/></IconButton>}</div>);
         this.setState({company : Response.data});});
     }
 
