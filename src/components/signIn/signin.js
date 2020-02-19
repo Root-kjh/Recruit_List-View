@@ -33,7 +33,6 @@ class SignIn extends React.Component{
         super(props);
         this.signin=this.signin.bind(this);
         this.signup=this.signup.bind(this);
-        this.getCsrfToken=this.getCsrfToken.bind(this);
         this.state={
             signin:{
                 username:false,
@@ -42,22 +41,18 @@ class SignIn extends React.Component{
             signup:{
                 password:false,
                 passwordR:false
-            },
-            csrf: this.getCsrfToken()
+            }
         };
     }
 
-    getCsrfToken(){
-        axios.get("http://127.0.0.1:9359/user/login").then(Response=>{
-            return(Response.data);
-        })};
-
     signin(){
-        axios.post("http://127.0.0.1:9359/user/login",{
-            username : document.getElementsByName("username")[0].value,
-            password : document.getElementsByName("password")[0].value,
-            'X-CSRF-TOKEN': this.state.csrf
-    }).then(Response=>{console.log(Response);});
+        axios.get("http://127.0.0.1:8717/login").then(Response=>
+        console.log(Response),
+            axios.post("http://127.0.0.1:8717/login",{
+                username : document.getElementsByName("username")[0].value,
+                password : document.getElementsByName("password")[0].value,
+                _csrf: Response.data
+            })).then(Response=>console.log(Response.data));
     }
 
     signup(){
