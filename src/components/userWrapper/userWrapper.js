@@ -1,16 +1,24 @@
 import React from "react";
 import { SignIn } from "../";
+import { Company } from "../";
 
 class  UserWrapper extends React.Component{
 
     constructor(props){
         super(props);
+        this.setJWT=this.setJWT.bind(this);
         this.state={
-            isLogin : false,
+            jwt : null,
             name : '',
             email : '',
             company : []
         };
+    }
+
+    setJWT(jwt){
+        this.setState({
+            jwt:jwt
+        });
     }
 
     // getRequestURI(){
@@ -30,15 +38,16 @@ class  UserWrapper extends React.Component{
     // }
 
     render(){
-        if(this.state.isLogin){
+        if(this.state.jwt!=null){
             return(
                 <div>
+                    <Company company={this.state.company}/>
                 </div>
             );
         }else{
             return(
                 <div>
-                    <SignIn/>
+                    <SignIn setJWT={this.setJWT}/>
                 </div>
             );
         }

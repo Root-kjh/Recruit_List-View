@@ -3,7 +3,9 @@ import axios from 'axios';
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Alert from '@material-ui/lab/Alert';
 
+const crypto = require('crypto')
 const useStyles = {
     root:{
         margin: '10px',
@@ -33,6 +35,7 @@ class SignIn extends React.Component{
         super(props);
         this.signin=this.signin.bind(this);
         this.signup=this.signup.bind(this);
+        this.encodePW=this.encodePW.bind(this);
         this.state={
             signin:{
                 username:false,
@@ -45,28 +48,40 @@ class SignIn extends React.Component{
         };
     }
 
+    componentDidMount(){
+        alert=null;
+    }
+
+    encodePW(password){
+        return crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('hex')).digest('hex');
+    }
+
     signin(){
-        axios.get("http://127.0.0.1:8717/login").then(Response=>
-        console.log(Response),
-            axios.post("http://127.0.0.1:8717/login",{
-                username : document.getElementsByName("username")[0].value,
-                password : document.getElementsByName("password")[0].value,
-                _csrf: Response.data
-            })).then(Response=>console.log(Response.data));
+        axios.post("http://127.0.0.1:8080/user/login",{
+            username : document.getElementsByName("username")[0].value,
+            password : this.encodePW(document.getElementsByName("password")[0].value),
+        }).then(Response=>{this.props.setJWT(Response.data);});
     }
 
     signup(){
         const password=document.getElementsByName("password")[1];
         const passwordR=document.getElementsByName("passwordR")[0];
         if(password.value===passwordR.value){
-            console.log("Test");
-        //     axios.post("http://localhost:8080/user/signup",{
-        //         username : document.getElementsByName("username")[0].value,
-        //         password : password.value
-        // }).then(Response=>{console.log(Response);});
+            axios.post("http://127.0.0.1:8080/user/signup",{
+                username : document.getElementsByName("username")[1].value,
+                password : this.encodePW(password.value),
+                email: document.getElementsByName("Email")[0].value
+        }).then(Response=>{
+            if(Response.data){
+                alert=<div><Alert severity="success">회원가입에 성공했습니다.</Alert></div>;
+            }else{
+                alert=<div><Alert severity="error">아이디가 중복됩니다.</Alert></div>;
+            }
+            console.log(alert);
+        });
         }else{
             this.setState({
-                signup:{
+                signup:{    
                     password:true,
                     passwordR:true
                 }
@@ -90,7 +105,7 @@ class SignIn extends React.Component{
                 <div className={classes.Form}>
                 <h1 className={classes.title}>SIGN UP</h1>
                 <form>
-                <TextField required className={classes.TextField} style={{marginLeft:"125px"}} name="id" label="Required" label="ID" />
+                <TextField required className={classes.TextField} style={{marginLeft:"125px"}} name="username" label="Required" label="ID" />
                 <TextField required className={classes.TextField} type="email" name="Email" label="Required" label="Email" />
                 <TextField required className={classes.TextField} style={{marginLeft:"125px"}} type="password" name="password" label="Required" label="Password" error={this.state.signup.password}/>
                 <TextField required className={classes.TextField} type="password" name="passwordR" label="Required" label="Password Retry"  error={this.state.signup.passwordR}/><br/>
