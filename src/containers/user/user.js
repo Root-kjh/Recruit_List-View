@@ -1,9 +1,9 @@
 import React from "react";
 import { UserWrapper } from "../../components";
 
-const User=()=>(
+const User=(props)=>(
     <div>
-        <UserWrapper/>
+        <UserWrapper setJWT={props.setJWT} jwt={props.jwt}/>
     </div>
 )
 

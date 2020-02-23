@@ -6,19 +6,11 @@ class  UserWrapper extends React.Component{
 
     constructor(props){
         super(props);
-        this.setJWT=this.setJWT.bind(this);
         this.state={
-            jwt : null,
             name : '',
             email : '',
             company : []
         };
-    }
-
-    setJWT(jwt){
-        this.setState({
-            jwt:jwt
-        });
     }
 
     // getRequestURI(){
@@ -38,7 +30,7 @@ class  UserWrapper extends React.Component{
     // }
 
     render(){
-        if(this.state.jwt!=null){
+        if(this.props.jwt!=null){
             return(
                 <div>
                     <Company company={this.state.company}/>
@@ -47,7 +39,7 @@ class  UserWrapper extends React.Component{
         }else{
             return(
                 <div>
-                    <SignIn setJWT={this.setJWT}/>
+                    <SignIn setJWT={this.props.setJWT}/>
                 </div>
             );
         }
