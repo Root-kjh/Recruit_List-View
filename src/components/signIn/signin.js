@@ -62,7 +62,7 @@ class SignIn extends React.Component{
             username : document.getElementsByName("username")[0].value,
             password : this.encodePW(document.getElementsByName("password")[0].value),
         }).then(Response=>{
-            cookie.save('jwt',Response.data);
+            cookie.save('jwt',Response.data,{maxAge:600});
             window.location.reload();
         });
     }

@@ -2,11 +2,13 @@ import React from "react";
 import { SignIn } from "../";
 import { Company } from "../";
 import cookie from 'react-cookies'
+import axios from 'axios';
 
 class  UserWrapper extends React.Component{
 
     constructor(props){
         super(props);
+        this.searchCompany=this.searchCompany.bind(this);
         this.state={
             name : '',
             email : '',
@@ -14,24 +16,22 @@ class  UserWrapper extends React.Component{
         };
     }
 
-    // getRequestURI(){
-    //     if(this.state.CompanyName.length>0){
-    //         return("http://127.0.0.1:8080/company/search/companyname/"+this.state.CompanyName+"/page/0")
-    //     }
-    //     return("http://127.0.0.1:8080/company/is-recruit/"
-    //     +this.state.isRecruit+
-    //     "/employeesnum-min/"+this.state.employeesNum+
-    //     "/foundingyear-max/"+this.state.foundingYear+
-    //     "/page/"+this.state.page);
-    // }
-
-    // searchCompany() {
-    //     axios.get(this.getRequestURI()).then(Response=>{this.setState({company : Response.data});});
-    //     pageElement=(<div><button>prev Page</button>{this.state.page}<button>next Page</button></div>);
-    // }
+    searchCompany() {
+        axios.get("http://127.0.0.1:8756/user/company",{headers:{
+            jwt:cookie.load('jwt')
+        }}).then(Response=>{
+            console.log(Response.data);
+            if(Response.data=="login"){
+                cookie.remove('jwt');
+                window.location.reload();
+            }else
+                this.setState({company : Response.data});
+        });
+    }
 
     render(){
         if(cookie.load('jwt')!=null){
+            this.searchCompany();
             return(
                 <div>
                     <Company company={this.state.company}/>
