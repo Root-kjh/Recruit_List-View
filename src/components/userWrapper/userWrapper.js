@@ -1,8 +1,10 @@
 import React from "react";
 import { SignIn } from "../";
 import { Company } from "../";
+import cookie from 'react-cookies'
 
 class  UserWrapper extends React.Component{
+
 
     constructor(props){
         super(props);
@@ -30,7 +32,7 @@ class  UserWrapper extends React.Component{
     // }
 
     render(){
-        if(this.props.jwt!=null){
+        if(cookie.load('jwt')!=null){
             return(
                 <div>
                     <Company company={this.state.company}/>

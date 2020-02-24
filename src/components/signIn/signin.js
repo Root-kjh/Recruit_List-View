@@ -3,8 +3,10 @@ import axios from 'axios';
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import cookie from 'react-cookies'
 
 const crypto = require('crypto')
+
 const useStyles = {
     root:{
         margin: '10px',
@@ -29,6 +31,7 @@ const useStyles = {
 };
 
 class SignIn extends React.Component{
+
     constructor(props){
         super(props);
         this.signin=this.signin.bind(this);
@@ -55,10 +58,12 @@ class SignIn extends React.Component{
     }
 
     signin(){
-        axios.post("http://127.0.0.1:8080/user/login",{
+        axios.post("http://localhost:8344/user/login",{
             username : document.getElementsByName("username")[0].value,
             password : this.encodePW(document.getElementsByName("password")[0].value),
-        }).then(Response=>{});
+        }).then(Response=>{
+            cookie.save('jwt',Response.data);
+        });
     }
 
     signup(){
