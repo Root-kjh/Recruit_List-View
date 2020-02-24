@@ -2,7 +2,6 @@ import React from "react";
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -10,6 +9,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
+import cookie from 'react-cookies'
 
 export default function Company({company}){
 
@@ -21,7 +24,14 @@ export default function Company({company}){
         {company.map((com,i)=>{
             return(<ExpansionPanel key={i}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    {
+                        (cookie.load('jwt')!=null)?
+                    <FormControlLabel
+                        control={<Checkbox />}
+                        label={com.companyName}
+                    />:
                     <Typography>{com.companyName}</Typography>
+                    }
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <List>

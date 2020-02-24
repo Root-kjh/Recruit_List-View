@@ -5,7 +5,6 @@ import cookie from 'react-cookies'
 
 class  UserWrapper extends React.Component{
 
-
     constructor(props){
         super(props);
         this.state={
