@@ -3,7 +3,6 @@ import axios from 'axios';
 import TextField from "@material-ui/core/TextField";
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Alert from '@material-ui/lab/Alert';
 
 const crypto = require('crypto')
 const useStyles = {
@@ -59,7 +58,7 @@ class SignIn extends React.Component{
         axios.post("http://127.0.0.1:8080/user/login",{
             username : document.getElementsByName("username")[0].value,
             password : this.encodePW(document.getElementsByName("password")[0].value),
-        }).then(Response=>{this.props.setJWT(Response.data);});
+        }).then(Response=>{});
     }
 
     signup(){
@@ -71,12 +70,6 @@ class SignIn extends React.Component{
                 password : this.encodePW(password.value),
                 email: document.getElementsByName("Email")[0].value
         }).then(Response=>{
-            if(Response.data){
-                alert=<div><Alert severity="success">회원가입에 성공했습니다.</Alert></div>;
-            }else{
-                alert=<div><Alert severity="error">아이디가 중복됩니다.</Alert></div>;
-            }
-            console.log(alert);
         });
         }else{
             this.setState({

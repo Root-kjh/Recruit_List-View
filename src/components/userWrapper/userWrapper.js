@@ -39,7 +39,7 @@ class  UserWrapper extends React.Component{
         }else{
             return(
                 <div>
-                    <SignIn setJWT={this.props.setJWT}/>
+                    <SignIn/>
                 </div>
             );
         }

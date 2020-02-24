@@ -10,15 +10,9 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.setHeaderName=this.setHeaderName.bind(this);
-    this.setJWT=this.setJWT.bind(this);
     this.state={
-      headerName : "company",
-      jwt:null
+      headerName : "company"
     };
-  }
-
-  setJWT(jwt){
-    this.setState({jwt:jwt});
   }
 
   setHeaderName(name){
@@ -29,7 +23,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header name={this.state.headerName} setHeaderName={this.setHeaderName} headers={headers}/>
-        {(this.state.headerName=="company")?<Company/>:<User setJWT={this.setJWT} jwt={this.state.jwt}/>}
+        {(this.state.headerName==="company")?<Company/>:<User/>}
         <Footer/>
       </div>
       );
