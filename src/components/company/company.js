@@ -13,11 +13,45 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import cookie from 'react-cookies'
-
+import axios from 'axios';
+import { useEffect,useState } from "react";
 export default function Company({company}){
 
-    const [copen, setCopen] = React.useState(false);
-    const [nopen, setNopen]=React.useState(false);
+    const [copen, setCopen] = useState(false);
+    const [nopen, setNopen] = useState(false);
+    const [checked, setCheck]=useState(false);
+    const [userCompany,setUserCompany]=useState([]);
+        
+    const handleChange=event=>{
+        const checked=event.target.checked;
+        const uri="http://127.0.0.1:8344/user/company/"+event.target.value;
+        const headers={headers:{jwt:cookie.load('jwt')}};
+        if(event.target.checked){
+            axios.put(uri,{},headers).then(Response=>{
+                if(Response.data===true)
+                    setCheck(checked);
+            });
+        }else{
+            axios.delete(uri,headers).then(Response=>{
+                if(Response.data===true)
+                    setCheck(checked);
+            });
+        }
+    };
+
+    // searchCompany=()=>{
+    //     if(cookie.load('jwt')!=null){
+    //         axios.get("http://127.0.0.1:8344/user/company",{headers:{
+    //             jwt:cookie.load('jwt')
+    //         }}).then(Response=>{
+    //             console.log(Response.data);
+    //             if(Response.data==="login")
+    //                 cookie.remove('jwt');
+    //             else
+    //                 setUserCompany(Response.data);
+    //         });
+    //     }
+    // };
 
     return(
     <div>
@@ -27,7 +61,7 @@ export default function Company({company}){
                     {
                         (cookie.load('jwt')!=null)?
                     <FormControlLabel
-                        control={<Checkbox />}
+                        control={<Checkbox value={com.id} checked={checked} onClick={handleChange}/>}
                         label={com.companyName}
                     />:
                     <Typography>{com.companyName}</Typography>

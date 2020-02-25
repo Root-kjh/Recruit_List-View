@@ -23,10 +23,6 @@ export default function Footer(){
     
     const classes=useStyles();
 
-    const handleToggle=(e)=>{
-        window.location.href=e;
-    }
-
     return(
     <footer className={classes.root}>
         <BottomNavigation showLabels>

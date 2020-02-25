@@ -16,12 +16,17 @@ class  UserWrapper extends React.Component{
         };
     }
 
+    componentDidMount(){
+        if(cookie.load('jwt')!=null)
+            this.searchCompany();
+    }
+
     searchCompany() {
-        axios.get("http://127.0.0.1:8756/user/company",{headers:{
+        axios.get("http://127.0.0.1:8344/user/company",{headers:{
             jwt:cookie.load('jwt')
         }}).then(Response=>{
             console.log(Response.data);
-            if(Response.data=="login"){
+            if(Response.data==="login"){
                 cookie.remove('jwt');
                 window.location.reload();
             }else
@@ -31,7 +36,6 @@ class  UserWrapper extends React.Component{
 
     render(){
         if(cookie.load('jwt')!=null){
-            this.searchCompany();
             return(
                 <div>
                     <Company company={this.state.company}/>

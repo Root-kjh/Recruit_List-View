@@ -49,10 +49,6 @@ class SignIn extends React.Component{
         };
     }
 
-    componentDidMount(){
-        alert=null;
-    }
-
     encodePW(password){
         return crypto.createHash('sha512').update(crypto.createHash('sha512').update(password).digest('hex')).digest('hex');
     }
@@ -62,8 +58,17 @@ class SignIn extends React.Component{
             username : document.getElementsByName("username")[0].value,
             password : this.encodePW(document.getElementsByName("password")[0].value),
         }).then(Response=>{
-            cookie.save('jwt',Response.data,{maxAge:600});
-            window.location.reload();
+            if(Response.data===false)
+                this.setState({
+                    signin:{
+                        username:true,
+                        password:true
+                    }
+                });
+            else{
+                cookie.save('jwt',Response.data,{maxAge:600});
+                window.location.reload();
+            }
         });
     }
 
@@ -76,6 +81,10 @@ class SignIn extends React.Component{
                 password : this.encodePW(password.value),
                 email: document.getElementsByName("Email")[0].value
         }).then(Response=>{
+            if(Response.data===true)
+                alert("회원가입 성공");
+            else
+                alert("회원가입 실패");
         });
         }else{
             this.setState({
@@ -103,6 +112,9 @@ class SignIn extends React.Component{
                 <div className={classes.Form}>
                 <h1 className={classes.title}>SIGN UP</h1>
                 <form>
+
+
+                    
                 <TextField required className={classes.TextField} style={{marginLeft:"125px"}} name="username" label="Required" label="ID" />
                 <TextField required className={classes.TextField} type="email" name="Email" label="Required" label="Email" />
                 <TextField required className={classes.TextField} style={{marginLeft:"125px"}} type="password" name="password" label="Required" label="Password" error={this.state.signup.password}/>

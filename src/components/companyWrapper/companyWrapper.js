@@ -54,9 +54,9 @@ class  CompanyWrapper extends React.Component{
 
     getRequestURI(){
         if(this.state.CompanyName.length>0){
-            return("http://13.125.62.254:8080/company/search/companyname/"+this.state.CompanyName+"/page/"+this.state.page)
+            return("http://127.0.0.1:8080/company/search/companyname/"+this.state.CompanyName+"/page/"+this.state.page)
         }
-        return("http://13.125.62.254:8080/company/is-recruit/"
+        return("http://127.0.0.1:8080/company/is-recruit/"
         +this.state.isRecruit+
         "/employeesnum-min/"+this.state.employeesNum+
         "/foundingyear-max/"+this.state.foundingYear+
