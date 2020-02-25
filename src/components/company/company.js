@@ -14,44 +14,53 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import cookie from 'react-cookies'
 import axios from 'axios';
-import { useEffect,useState } from "react";
-export default function Company({company}){
+import { useState } from "react";
+export default function Company({company,userLikeCompany}){
 
-    const [copen, setCopen] = useState(false);
-    const [nopen, setNopen] = useState(false);
-    const [checked, setCheck]=useState(false);
-    const [userCompany,setUserCompany]=useState([]);
+    const [copenList, setCopen] = useState([]);
+    const [nopenList, setNopen] = useState([]);
+    const [checkedList, setCheck]=useState([]);
         
-    const handleChange=event=>{
+    const handleChange=(event,companyId)=>{
+        console.log(userLikeCompany)
+        console.log(event);
         const checked=event.target.checked;
-        const uri="http://127.0.0.1:8344/user/company/"+event.target.value;
+        const uri="http://127.0.0.1:8080/user/company/"+companyId;
         const headers={headers:{jwt:cookie.load('jwt')}};
         if(event.target.checked){
             axios.put(uri,{},headers).then(Response=>{
                 if(Response.data===true)
-                    setCheck(checked);
+                    event.target.checked=checked;
             });
         }else{
             axios.delete(uri,headers).then(Response=>{
                 if(Response.data===true)
-                    setCheck(checked);
+                    event.target.checked=checked;
             });
         }
     };
 
-    // searchCompany=()=>{
-    //     if(cookie.load('jwt')!=null){
-    //         axios.get("http://127.0.0.1:8344/user/company",{headers:{
-    //             jwt:cookie.load('jwt')
-    //         }}).then(Response=>{
-    //             console.log(Response.data);
-    //             if(Response.data==="login")
-    //                 cookie.remove('jwt');
-    //             else
-    //                 setUserCompany(Response.data);
-    //         });
-    //     }
-    // };
+    const isUserLikeCompany=companyId=>{
+        userLikeCompany.filter((e)=>{
+            return e===companyId;
+        })
+    };
+
+    const handleCopen=(i)=>{
+        console.log(i);
+        if (i in copenList)
+            setCopen(copenList.filter((n)=>{return n!=i}));
+        else
+            setCopen(copenList.concat(i));
+        console.log(copenList);
+    }
+
+    const handleNopen=(i)=>{
+        if (i in nopenList)
+            setNopen(nopenList.filter((n)=>{return n!=i}));
+        else
+            setNopen(nopenList.concat(i));
+    }
 
     return(
     <div>
@@ -61,7 +70,7 @@ export default function Company({company}){
                     {
                         (cookie.load('jwt')!=null)?
                     <FormControlLabel
-                        control={<Checkbox value={com.id} checked={checked} onClick={handleChange}/>}
+                        control={<Checkbox checked={i in checkedList} onClick={handleChange.bind(com.id)}/>}
                         label={com.companyName}
                     />:
                     <Typography>{com.companyName}</Typography>
@@ -75,11 +84,11 @@ export default function Company({company}){
                         <ListItem>
                             <ListItemText primary={"창립년도 : "+com.foundingYear}/>
                         </ListItem>
-                        <ListItem button onClick={()=>setNopen(!nopen)}>
+                        <ListItem button onClick={handleNopen.bind(i)}>
                             <ListItemText primary="채용공고" />
-                                {nopen ? <ExpandLess /> : <ExpandMore />}
+                                {(i in nopenList) ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                            <Collapse in={nopen} timeout="auto" unmountOnExit>
+                            <Collapse in={i in nopenList} timeout="auto" unmountOnExit>
                                 <List>
                                     {com.recruitmentNotices.map((notice,j)=>{
                                         return(
@@ -90,11 +99,11 @@ export default function Company({company}){
                                     })}
                                 </List>
                             </Collapse>
-                            <ListItem button onClick={()=>setCopen(!copen)}>
+                            <ListItem button value={i} onClick={()=>{handleCopen(this)}}>
                             <ListItemText primary="기업정보" />
-                                {copen ? <ExpandLess /> : <ExpandMore />}
+                                {(i in copenList) ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                            <Collapse in={copen} timeout="auto" unmountOnExit>
+                            <Collapse in={i in copenList} timeout="auto" unmountOnExit>
                                 <List>
                                     {com.companyInfos.map((info,j)=>{
                                         return(

@@ -54,7 +54,7 @@ class SignIn extends React.Component{
     }
 
     signin(){
-        axios.post("http://localhost:8080/user/login",{
+        axios.post("http://127.0.0.1:8080/user/login",{
             username : document.getElementsByName("username")[0].value,
             password : this.encodePW(document.getElementsByName("password")[0].value),
         }).then(Response=>{

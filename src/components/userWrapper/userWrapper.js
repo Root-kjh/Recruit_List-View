@@ -22,7 +22,7 @@ class  UserWrapper extends React.Component{
     }
 
     searchCompany() {
-        axios.get("http://127.0.0.1:8344/user/company",{headers:{
+        axios.get("http://127.0.0.1:8080/user/company",{headers:{
             jwt:cookie.load('jwt')
         }}).then(Response=>{
             console.log(Response.data);
@@ -38,7 +38,7 @@ class  UserWrapper extends React.Component{
         if(cookie.load('jwt')!=null){
             return(
                 <div>
-                    <Company company={this.state.company}/>
+                    <Company company={this.state.company} userLikeCompany={this.state.company}/>
                 </div>
             );
         }else{
