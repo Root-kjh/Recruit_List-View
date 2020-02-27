@@ -22,7 +22,7 @@ class  UserWrapper extends React.Component{
     }
 
     searchCompany() {
-        axios.get("http://127.0.0.1:8080/user/company",{headers:{
+        axios.get("http://13.125.62.254:8080/user/company",{headers:{
             jwt:cookie.load('jwt')
         }}).then(Response=>{
             console.log(Response.data);

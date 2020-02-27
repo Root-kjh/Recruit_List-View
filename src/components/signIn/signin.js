@@ -54,7 +54,7 @@ class SignIn extends React.Component{
     }
 
     signin(){
-        axios.post("http://127.0.0.1:8080/user/login",{
+        axios.post("http://13.125.62.254:8080/user/login",{
             username : document.getElementsByName("username")[0].value,
             password : this.encodePW(document.getElementsByName("password")[0].value),
         }).then(Response=>{
@@ -76,7 +76,7 @@ class SignIn extends React.Component{
         const password=document.getElementsByName("password")[1];
         const passwordR=document.getElementsByName("passwordR")[0];
         if(password.value===passwordR.value){
-            axios.post("http://127.0.0.1:8080/user/signup",{
+            axios.post("http://13.125.62.254:8080/user/signup",{
                 username : document.getElementsByName("username")[1].value,
                 password : this.encodePW(password.value),
                 email: document.getElementsByName("Email")[0].value

@@ -23,7 +23,7 @@ export default function Company({company,userLikeCompany}){
         
     const handleChange=(event,company)=>{
         const checked=event.target.checked;
-        const uri="http://127.0.0.1:8080/user/company/"+company.id;
+        const uri="http://13.125.62.254:8080/user/company/"+company.id;
         const headers={headers:{jwt:cookie.load('jwt')}};
         if(checked){
             axios.put(uri,{},headers).then(
@@ -39,7 +39,7 @@ export default function Company({company,userLikeCompany}){
     };
 
     useEffect(()=>{
-            axios.get("http://127.0.0.1:8080/user/company",{headers:{
+            axios.get("http://13.125.62.254:8080/user/company",{headers:{
                 jwt:cookie.load('jwt')
             }}).then(Response=>{    
                 setCheck(Response.data);
