@@ -14,50 +14,80 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import cookie from 'react-cookies'
 import axios from 'axios';
-import { useState } from "react";
-export default function Company({company,userLikeCompany}){
+import { useState,useEffect } from "react";
 
+export default function Company({company,userLikeCompany}){
     const [copenList, setCopen] = useState([]);
     const [nopenList, setNopen] = useState([]);
     const [checkedList, setCheck]=useState([]);
         
-    const handleChange=(event,companyId)=>{
-        console.log(userLikeCompany)
-        console.log(event);
+    const handleChange=(event,company)=>{
         const checked=event.target.checked;
-        const uri="http://127.0.0.1:8080/user/company/"+companyId;
+        const uri="http://127.0.0.1:8080/user/company/"+company.id;
         const headers={headers:{jwt:cookie.load('jwt')}};
-        if(event.target.checked){
-            axios.put(uri,{},headers).then(Response=>{
-                if(Response.data===true)
-                    event.target.checked=checked;
-            });
+        if(checked){
+            axios.put(uri,{},headers).then(
+                setCheck(checkedList.concat(company))
+            );
         }else{
-            axios.delete(uri,headers).then(Response=>{
-                if(Response.data===true)
-                    event.target.checked=checked;
-            });
+            axios.delete(uri,headers).then(
+                setCheck(checkedList.filter((value)=>{
+                    return value.id!==company.id;
+                }))
+            );
         }
     };
 
+    useEffect(()=>{
+            axios.get("http://127.0.0.1:8080/user/company",{headers:{
+                jwt:cookie.load('jwt')
+            }}).then(Response=>{    
+                setCheck(Response.data);
+            });
+    },[]);
+
     const isUserLikeCompany=companyId=>{
-        userLikeCompany.filter((e)=>{
-            return e===companyId;
-        })
+        try{
+        let flag=false;
+        checkedList.forEach((e)=>{
+            if(e.id===companyId)
+                flag=true;
+        });
+        return flag;
+        }catch{
+        }
     };
 
-    const handleCopen=(i)=>{
-        console.log(i);
-        if (i in copenList)
-            setCopen(copenList.filter((n)=>{return n!=i}));
-        else
-            setCopen(copenList.concat(i));
-        console.log(copenList);
+    const isCopen=i=>{
+        let flag=false;
+        copenList.forEach(element => {
+            if(element===i)
+                flag=true;
+        });
+
+        return flag;
     }
 
-    const handleNopen=(i)=>{
-        if (i in nopenList)
-            setNopen(nopenList.filter((n)=>{return n!=i}));
+    const isNopen=i=>{
+        let flag=false;
+        nopenList.forEach(element => {
+            if(element===i)
+                flag=true;
+        });
+
+        return flag;
+    }
+
+    const handleCopen=(event,i)=>{
+        if (isCopen(i))
+            setCopen(copenList.filter((n)=>{return n!==i}));
+        else
+            setCopen(copenList.concat(i));
+    }
+
+    const handleNopen=(event,i)=>{
+        if (isNopen(i))
+            setNopen(nopenList.filter((n)=>{return n!==i}));
         else
             setNopen(nopenList.concat(i));
     }
@@ -70,7 +100,7 @@ export default function Company({company,userLikeCompany}){
                     {
                         (cookie.load('jwt')!=null)?
                     <FormControlLabel
-                        control={<Checkbox checked={i in checkedList} onClick={handleChange.bind(com.id)}/>}
+                        control={<Checkbox checked={isUserLikeCompany(com.id)} value={com.id} onClick={(e)=>handleChange(e,com)}/>}
                         label={com.companyName}
                     />:
                     <Typography>{com.companyName}</Typography>
@@ -84,11 +114,11 @@ export default function Company({company,userLikeCompany}){
                         <ListItem>
                             <ListItemText primary={"창립년도 : "+com.foundingYear}/>
                         </ListItem>
-                        <ListItem button onClick={handleNopen.bind(i)}>
+                        <ListItem button onClick={(e)=>handleNopen(e,i)}>
                             <ListItemText primary="채용공고" />
-                                {(i in nopenList) ? <ExpandLess /> : <ExpandMore />}
+                                {isNopen(i) ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                            <Collapse in={i in nopenList} timeout="auto" unmountOnExit>
+                            <Collapse in={isNopen(i)} timeout="auto" unmountOnExit>
                                 <List>
                                     {com.recruitmentNotices.map((notice,j)=>{
                                         return(
@@ -99,11 +129,11 @@ export default function Company({company,userLikeCompany}){
                                     })}
                                 </List>
                             </Collapse>
-                            <ListItem button value={i} onClick={()=>{handleCopen(this)}}>
+                            <ListItem button value={i} onClick={(e)=>{handleCopen(e,i)}}>
                             <ListItemText primary="기업정보" />
-                                {(i in copenList) ? <ExpandLess /> : <ExpandMore />}
+                                {isCopen(i) ? <ExpandLess /> : <ExpandMore />}
                         </ListItem>
-                            <Collapse in={i in copenList} timeout="auto" unmountOnExit>
+                            <Collapse in={isCopen(i)} timeout="auto" unmountOnExit>
                                 <List>
                                     {com.companyInfos.map((info,j)=>{
                                         return(

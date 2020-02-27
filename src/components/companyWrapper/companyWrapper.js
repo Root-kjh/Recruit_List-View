@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
-import cookie from 'react-cookies'
 
 let pageElement=null;
 
@@ -39,7 +38,6 @@ class  CompanyWrapper extends React.Component{
         this.searchCompany=this.searchCompany.bind(this);
         this.setPage=this.setPage.bind(this);
         this.clickSearchButton=this.clickSearchButton.bind(this);
-        this.searchUserLikeCompany=this.searchUserLikeCompany.bind(this);
         this.state={
             CompanyName : "",
             isRecruit : false,
@@ -71,25 +69,7 @@ class  CompanyWrapper extends React.Component{
             page:pg
         },function(){
             this.searchCompany();
-            this.searchUserLikeCompany();
         });
-    }
-
-    searchUserLikeCompany(){
-        if(cookie.load('jwt')!=null){
-            axios.get("http://127.0.0.1:8080/user/company",{headers:{
-                jwt:cookie.load('jwt')
-            }}).then(Response=>{
-                if(Response.data==="login")
-                    cookie.remove('jwt');
-                else
-                    this.setState({
-                        userLikeCompany: Response.data
-                    });
-            });
-        }else{
-            this.setState({userLikeCompany:[]});
-        }
     }
 
     searchCompany() {
@@ -104,7 +84,6 @@ class  CompanyWrapper extends React.Component{
             page:0
         });
         this.searchCompany();
-        this.searchUserLikeCompany();
     }
 
     handleChange=(e)=>{
@@ -140,7 +119,7 @@ class  CompanyWrapper extends React.Component{
                     검색
                 </Button>
             </div>
-            <Company company={this.state.company} userLikeCompany={this.state.userLikeCompany}/>
+            <Company company={this.state.company}/>
             {pageElement}
         </div>
     );

@@ -38,7 +38,7 @@ class  UserWrapper extends React.Component{
         if(cookie.load('jwt')!=null){
             return(
                 <div>
-                    <Company company={this.state.company} userLikeCompany={this.state.company}/>
+                    <Company company={this.state.company}/>
                 </div>
             );
         }else{
