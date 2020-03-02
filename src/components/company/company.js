@@ -38,6 +38,10 @@ export default function Company({company,userLikeCompany}){
         }
     };
 
+    function ListItemLink(props) {
+        return <ListItem button component="a" {...props} />;
+      }
+
     useEffect(()=>{
             axios.get("http://13.125.62.254:8080/user/company",{headers:{
                 jwt:cookie.load('jwt')
@@ -122,9 +126,9 @@ export default function Company({company,userLikeCompany}){
                                 <List>
                                     {com.recruitmentNotices.map((notice,j)=>{
                                         return(
-                                            <ListItem key={j}>
-                                                <ListItemText  primary={notice.siteName+" : "+notice.uri}/>
-                                            </ListItem>
+                                            <ListItemLink key={j} href={notice.uri}>
+                                                <ListItemText  primary={notice.siteName}/>
+                                            </ListItemLink>
                                         )
                                     })}
                                 </List>
@@ -137,9 +141,9 @@ export default function Company({company,userLikeCompany}){
                                 <List>
                                     {com.companyInfos.map((info,j)=>{
                                         return(
-                                            <ListItem key={j}>
-                                                <ListItemText  primary={info.siteName+" : "+info.uri}/>
-                                            </ListItem>
+                                            <ListItemLink key={j} href={info.uri}>
+                                                <ListItemText  primary={info.siteName}/>
+                                            </ListItemLink>
                                         )
                                     })}
                                 </List>
