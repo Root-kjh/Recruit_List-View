@@ -3,31 +3,21 @@ import { Header } from "./components";
 import { Footer } from "./components";
 import { Company } from "./containers";
 import { User } from "./containers";
+import { useSelector } from 'react-redux';
+import { containerClassSelector } from './store/lib/ClassSelector';
 
-const headers=["company","user"];
+const App = () => {
 
-class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.setHeaderName=this.setHeaderName.bind(this);
-    this.state={
-      headerName : "company"
-    };
-  }
+  const containerClass = containerClassSelector();
 
-  setHeaderName(name){
-    this.setState({headerName : name});
-  }  
-
-  render(){
     return (
       <div className="App">
-        <Header name={this.state.headerName} setHeaderName={this.setHeaderName} headers={headers}/>
-        {(this.state.headerName==="company")?<Company/>:<User/>}
+        <Header/>
+          {containerClass}
         <Footer/>
       </div>
-      );
-    }
+  );
 }
 
 export default App;
+ 

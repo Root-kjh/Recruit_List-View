@@ -1,14 +1,16 @@
 import Header from './header/header';
 import Footer from "./footer/footer";
 import CompanyWrapper from "./companyWrapper/companyWrapper";
-import Company from "./company/company";
+import Company from "./company/Company";
 import UserWrapper from "./userWrapper/userWrapper";
-import SignIn from "./signIn/signin";
+import Signin from "./Signin/Signin";
+import Signup from './signup/Signup';
 export {
     Header,
     Footer,
     CompanyWrapper,
     Company,
     UserWrapper,
-    SignIn
+    Signin,
+    Signup
 };

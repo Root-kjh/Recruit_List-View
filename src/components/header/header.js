@@ -1,45 +1,37 @@
-import React from "react";
+import React,{ useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import cookie from 'react-cookies'
+import { useSelector } from 'react-redux';
+import { changeForm } from '../../store/modules/Form';
+import moduleName from 'module';
 
-class Header extends React.Component{
+const Header = () => {
 
-    constructor(props){
-        super(props);
-        this.handleChange=this.handleChange.bind(this);
-        this.logout=this.logout.bind(this);
-        this.state={
-            value:0
-        };
+    const [TabsValue, SetTabsValue] = useState(0);
+    const logout = () => {}
+    
+    const handleChange = (e,value) => {
+        SetTabsValue(value);
+
     }
 
-    logout(){
-        cookie.remove('jwt');
-    }
+    const beforeLoginHeader = ["Company", "Signin", "Signup"];
+    const afterLoginHeader = ["Company", "UserLikeCompany", "Logout"];
+    const jwt = useSelector(state => state.jwt, []);
+    const headers = jwt? afterLoginHeader : beforeLoginHeader;
+    const tabList = headers.map((header,index)=>
+    <Tab key={index} label={header}/>);
 
-    handleChange(e,value){
-        this.setState({value : value});
-        this.props.setHeaderName(this.props.headers[value]);
-    }
-
-    render(){
-      
-        const headers=this.props.headers.map((header,index)=>
-        <Tab key={index} label={header}/>);
-
-        return(
+    return(
             <div>
                 <AppBar position="static">
-                    <Tabs value={this.state.value} onChange={this.handleChange}>
-                        {headers}
-                        {(cookie.load('jwt')!=null)? <Tab label="logout" onClick={this.logout}/>:null}
+                    <Tabs value={TabsValue} onChange={handleChange}>
+                        {tabList}
                     </Tabs>
                 </AppBar>
             </div>
-        );
-    }
+    );
 }
 
 export default Header;

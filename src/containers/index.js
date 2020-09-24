@@ -1,5 +1,5 @@
-import Company from './company/company';
-import User from "./user/user";
+import Company from './company/Company';
+import User from "./user/User";
 
 export {
     Company,

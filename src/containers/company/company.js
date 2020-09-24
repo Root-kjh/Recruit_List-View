@@ -1,10 +1,11 @@
 import React from "react";
-import { CompanyWrapper } from '../../components';
 
-const Company=()=>(
-    <div>
-        <CompanyWrapper/>
-    </div>
-)
+const Company=()=>{
+    return(
+        <div>
+            
+        </div>
+    );
+};
 
 export default Company;

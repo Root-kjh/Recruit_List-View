@@ -30,7 +30,7 @@ const useStyles = {
     }
 };
 
-class SignIn extends React.Component{
+class Signin extends React.Component{
 
     constructor(props){
         super(props);
