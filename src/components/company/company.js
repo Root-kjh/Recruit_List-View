@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import cookie from 'react-cookies'
 import axios from 'axios';
 import { useState,useEffect } from "react";
+import BASE_URL from '../../App';
 
 export default function Company({company,userLikeCompany}){
     const [copenList, setCopen] = useState([]);

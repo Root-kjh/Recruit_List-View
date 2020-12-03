@@ -1,19 +1,21 @@
 import React from 'react';
 import { Header } from "./components";
 import { Footer } from "./components";
-import { Company } from "./containers";
-import { User } from "./containers";
 import { useSelector } from 'react-redux';
-import { containerClassSelector } from './store/lib/ClassSelector';
+import { COMPANYFORM } from './store/modules/Form';
+import { CompanyWrapper, UserLikeCompanyWrapper } from './containers';
+
+const HOST = "kjh-projects.kro.kr"
+const BASE_URL = "http://+"+HOST+"+:8080/"
 
 const App = () => {
 
-  const containerClass = containerClassSelector();
+  const companyForm = useSelector(state => state.form)
 
     return (
       <div className="App">
         <Header/>
-          {containerClass}
+          {companyForm === COMPANYFORM? <CompanyWrapper/> : <UserLikeCompanyWrapper/>}
         <Footer/>
       </div>
   );

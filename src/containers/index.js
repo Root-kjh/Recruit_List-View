@@ -1,7 +1,7 @@
-import Company from './company/Company';
-import User from "./user/User";
+import CompanyWrapper from './companyWrapper/CompanyWrapper';
+import UserLikeCompanyWrapper from './userLikeCompanyWrapper/UserLikeCompanyWrapper';
 
 export {
-    Company,
-    User
+    CompanyWrapper,
+    UserLikeCompanyWrapper
 };
