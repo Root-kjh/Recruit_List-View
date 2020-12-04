@@ -10,17 +10,17 @@ const Signup = props => {
     const signup = () => {
         const password=document.getElementsByName("password")[1];
         const passwordR=document.getElementsByName("passwordR")[0];
-        if(password.value===passwordR.value){
+        if (password.value === passwordR.value){
             axios.post(BASE_URL+"user/signup",{
                 "email": document.getElementsByName("Email")[0].value,
-                "userName" : document.getElementsByName("username")[1].value,
-                "password" : password.value
-        }).then( () => {
+                "userName": document.getElementsByName("username")[1].value,
+                "password": password.value
+        }).then(() => {
             alert("회원가입 성공");
         }).catch(error => {
-            if (error.response.status===406)
+            if (error.response.status === 406)
                 alert("이미 존재하는 유저");
-            else if (error.response.status===405)
+            else if (error.response.status === 405)
                 alert("좋지 못한 입력값");
         });
         }

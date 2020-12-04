@@ -26,10 +26,10 @@ const Signin = props => {
     }
 
     const signin = () => {
-        axios.post(BASE_URL+"user/login",{
-            "userName" : document.getElementsByName("username")[0].value,
-            "password" : document.getElementsByName("password")[0].value
-        }).then(response=>{
+        axios.post(BASE_URL + "user/login",{
+            "userName": document.getElementsByName("username")[0].value,
+            "password": document.getElementsByName("password")[0].value
+        }).then(response => {
             const jwt = response.data;
             dispatch(change_jwt(jwt));
             getUserLikeCompany(jwt);
