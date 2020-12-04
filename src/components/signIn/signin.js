@@ -3,27 +3,42 @@ import axios from 'axios';
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
-import BASE_URL from '../../App';
+import { BASE_URL } from '../../App';
 import { useDispatch } from "react-redux";
 import { change_jwt } from "../../store/modules/JWT";
+import { set_userLikeCompany } from "../../store/modules/UserLikeCompany";
 
 const Signin = props => {
 
     const dispatch = useDispatch()
 
+    const getUserLikeCompany = jwt => {
+        axios.get(BASE_URL+"user/get_like_company",{
+            headers:{
+                "X-AUTH-TOKEN": jwt
+            }
+        }).then(response => {
+            dispatch(set_userLikeCompany(response.data));
+        }).catch(error => {
+            console.log(error);
+            alert("오류발생");
+        })
+    }
+
     const signin = () => {
         axios.post(BASE_URL+"user/login",{
-            userName : document.getElementsByName("username")[0].value,
-            password : document.getElementsByName("password")[0].value,
+            "userName" : document.getElementsByName("username")[0].value,
+            "password" : document.getElementsByName("password")[0].value
         }).then(response=>{
             const jwt = response.data;
             dispatch(change_jwt(jwt));
+            getUserLikeCompany(jwt);
         }).catch(error => {
             try{
                 if (error.response.status === 405)
                     alert("좋지 못한 입력값");
                 else if (error.response.status === 403)
-                    alert("아이디 혹은 패스워드가 틀림")
+                    alert("아이디 혹은 패스워드가 틀림");
             } catch {
 
             }

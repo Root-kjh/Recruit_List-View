@@ -14,72 +14,79 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
 import cookie from 'react-cookies'
 import axios from 'axios';
-import { useState,useEffect } from "react";
-import BASE_URL from '../../App';
+import { useState } from "react";
+import { BASE_URL } from '../../App';
+import { useDispatch, useSelector } from "react-redux";
+import { insert_userLikeCompany, delete_userLikeCompany } from "../../store/modules/UserLikeCompany";
 
-export default function Company({company,userLikeCompany}){
+const Company = company =>{
+    console.log(company);
     const [copenList, setCopen] = useState([]);
     const [nopenList, setNopen] = useState([]);
-    const [checkedList, setCheck]=useState([]);
-        
+    
+    const dispatch = useDispatch()
+    const jwt = useSelector(state => state.jwt);
+    const userLikeCompany = useSelector(state => state.userLikeCompany);
+
     const handleChange=(event,company)=>{
         const checked=event.target.checked;
-        const uri="http://13.125.62.254:8080/user/company/"+company.id;
-        const headers={headers:{jwt:cookie.load('jwt')}};
         if(checked){
-            axios.put(uri,{},headers).then(
-                setCheck(checkedList.concat(company))
-            );
+            axios.put(BASE_URL+"user/add_like_company",{},{
+                headers:{
+                    "X-AUTH-TOKEN": jwt
+                }
+            }).then(() => {
+                dispatch(insert_userLikeCompany(company));
+            }).catch(error => {
+                console.log(error);
+                alert("오류발생");
+            });
         }else{
-            axios.delete(uri,headers).then(
-                setCheck(checkedList.filter((value)=>{
-                    return value.id!==company.id;
-                }))
-            );
+            axios.delete(BASE_URL+"user/delete_like_company",{
+                headers:{
+                    "X-AUTH-TOKEN": jwt
+                }
+            }).then(() =>{
+                dispatch(delete_userLikeCompany(company.id));
+            }).catch(error => {
+                console.log(error);
+                alert("오류발생");
+            });
         }
     };
 
-    function ListItemLink(props) {
+    const ListItemLink = props => {
         return <ListItem button component="a" {...props} />;
       }
 
-    useEffect(()=>{
-            axios.get("http://13.125.62.254:8080/user/company",{headers:{
-                jwt:cookie.load('jwt')
-            }}).then(Response=>{    
-                setCheck(Response.data);
-            });
-    },[]);
-
-    const isUserLikeCompany=companyId=>{
+    const isUserLikeCompany = companyId => {
         try{
-        let flag=false;
-        checkedList.forEach((e)=>{
-            if(e.id===companyId)
-                flag=true;
+        let flag = false;
+        userLikeCompany.forEach(e => {
+            if (e.id === companyId)
+                flag = true;
         });
         return flag;
-        }catch{
+        } catch (error) {
+            console.log(error);
         }
     };
 
-    const isCopen=i=>{
+    const isCopen = i => {
         let flag=false;
-        copenList.forEach(element => {
-            if(element===i)
-                flag=true;
+        copenList.forEach( element => {
+            if (element === i)
+                flag = true;
         });
-
         return flag;
     }
 
-    const isNopen=i=>{
-        let flag=false;
+    const isNopen = i => {
+        let flag = false;
         nopenList.forEach(element => {
-            if(element===i)
-                flag=true;
+            if (element === i)
+                flag = true;
         });
-
         return flag;
     }
 
@@ -99,7 +106,7 @@ export default function Company({company,userLikeCompany}){
 
     return(
     <div>
-        {company.map((com,i)=>{
+        {company.company.map((com,i)=>{
             return(<ExpansionPanel key={i}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     {
@@ -156,3 +163,5 @@ export default function Company({company,userLikeCompany}){
     </div>
     );
 }
+
+export default Company;

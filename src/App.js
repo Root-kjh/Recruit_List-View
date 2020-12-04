@@ -5,8 +5,9 @@ import { useSelector } from 'react-redux';
 import { COMPANYFORM } from './store/modules/Form';
 import { CompanyWrapper, UserLikeCompanyWrapper } from './containers';
 
-const HOST = "kjh-projects.kro.kr"
-const BASE_URL = "http://+"+HOST+"+:8080/"
+// const HOST = "kjh-projects.kro.kr"
+const HOST = "localhost"
+export const BASE_URL = "http://"+HOST+":8080/recruit-list/"
 
 const App = () => {
 

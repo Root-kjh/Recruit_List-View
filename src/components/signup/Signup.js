@@ -3,7 +3,7 @@ import axios from 'axios';
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
-import BASE_URL from '../../App';
+import { BASE_URL } from '../../App';
 
 const Signup = props => {
 
@@ -12,9 +12,9 @@ const Signup = props => {
         const passwordR=document.getElementsByName("passwordR")[0];
         if(password.value===passwordR.value){
             axios.post(BASE_URL+"user/signup",{
-                email: document.getElementsByName("Email")[0].value,
-                userName : document.getElementsByName("username")[1].value,
-                password : password.value
+                "email": document.getElementsByName("Email")[0].value,
+                "userName" : document.getElementsByName("username")[1].value,
+                "password" : password.value
         }).then( () => {
             alert("회원가입 성공");
         }).catch(error => {

@@ -8,6 +8,7 @@ import { drop_jwt } from '../../store/modules/JWT';
 import { changeForm } from '../../store/modules/Form';
 import Signin from "../Signin/Signin";
 import Signup from "../signup/Signup";
+import { drop_userLikeCompany } from "../../store/modules/UserLikeCompany";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -16,6 +17,7 @@ const Header = () => {
     const [signupModalIsOpen, setSignupModalIsOpen] = useState(false);
     const logout = () => {
         dispatch(drop_jwt());
+        dispatch(drop_userLikeCompany());
     }
 
     const signinClick = () => {

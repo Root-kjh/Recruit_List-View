@@ -9,9 +9,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import { Company } from "../../components";
-import BASE_URL from '../../App';
-
-let pageElement=null;
+import { BASE_URL } from '../../App';
 
 const CompanyWrapper = () => {
 
@@ -21,28 +19,18 @@ const CompanyWrapper = () => {
         employeesNum : 0,
         foundingYear : new Date().getFullYear(),
         page : 0,
-        company : []
+        company : Array(0)
     })
+
     const {companyName, isRecruit, employeesNum, foundingYear, page, company} = filter;
 
     const [searchType, setSearchType] = useState("none");
 
-    const getRequestURI = () => {
-        if(companyName.length>0){
-            return("http://13.125.62.254:8080/company/search/companyname/"+companyName+"/page/"+page)
-        }
-        return("http://13.125.62.254:8080/company/is-recruit/"
-        +isRecruit+
-        "/employeesnum-min/"+employeesNum+
-        "/foundingyear-max/"+foundingYear+
-        "/page/"+page);
-    }
-
     const setPage = pg => {
         setFilter({...filter, page: pg});
-        if (searchType === "none")
+        if (searchType == "none")
             showCompany();
-        else if (searchType === "filter")
+        else if (searchType == "filter")
             filterCompany();
         else
             searchCompany();
@@ -53,25 +41,39 @@ const CompanyWrapper = () => {
             setFilter({...filter, company: response.data});
         }).catch(error => {
             console.log(error);
-            alert("오류 발생");
         });
     }
 
     const searchCompany = () => {
-        axios.get(getRequestURI()).then(Response=>{pageElement=(
-        <div >{page>0 && <IconButton onClick={setPage(page-1)}><ArrowBackIosIcon/></IconButton >}
-        {page+1}{Response.data.length===20 && <IconButton onClick={setPage(page+1)}><ArrowForwardIosIcon/></IconButton>}</div>);
-        this.setState({company : Response.data});});
+        axios.get(BASE_URL+"company/search/"+companyName+"/"+page).then(response => {
+            setFilter({...filter, company: response.data});
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     const filterCompany = () => {
-
+        axios.post(BASE_URL+"company/filter",{
+            "isRecruiting": isRecruit,
+            "foundingYear": foundingYear,
+            "employeesNum": employeesNum,
+            "page": page
+        }).then( response => {
+            setFilter({...filter, company: response.data});
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     const clickSearchButton = () => {
         setFilter({...filter, page: 0});
-        setSearchType("search");
-        searchCompany();
+        if (companyName == ""){
+            setSearchType("none");
+            showCompany();
+        }else{
+            setSearchType("search");
+            searchCompany();
+        }
     }
 
     const clickFilterButton = () => {
@@ -84,6 +86,12 @@ const CompanyWrapper = () => {
         setFilter({...filter, [name]: value});
     }
 
+    const pageElement = {
+        backButton: <IconButton onClick={()=>setPage(page-1)}><ArrowBackIosIcon/></IconButton>,
+        page: page+1,
+        forwardButton: <IconButton onClick={()=>setPage(page+1)}><ArrowForwardIosIcon/></IconButton>
+    }
+    
     return(
         <div >
             <div >
@@ -109,7 +117,12 @@ const CompanyWrapper = () => {
                 </Button>
             </div>
             <Company company={company}/>
-            {(page === 0 && company === [])? null : pageElement}
+            {
+                (page === 0 && company === [])? null:
+                (company.length < 20)? pageElement.backButton+pageElement.page:
+                (page === 0)? pageElement.page+pageElement.forwardButton:
+                pageElement.backButton+pageElement.page+pageElement.forwardButton
+            }
         </div>
     );
 }
