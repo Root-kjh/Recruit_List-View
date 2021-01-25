@@ -10,6 +10,8 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import IconButton from '@material-ui/core/IconButton';
 import { Company } from "../../components";
 import { BASE_URL } from '../../App';
+import { Grid } from "@material-ui/core";
+import FormControl from '@material-ui/core/FormControl';
 
 const CompanyWrapper = () => {
 
@@ -28,9 +30,9 @@ const CompanyWrapper = () => {
 
     const setPage = pg => {
         setFilter({...filter, page: pg});
-        if (searchType == "none")
+        if (searchType === "none")
             showCompany();
-        else if (searchType == "filter")
+        else if (searchType === "filter")
             filterCompany();
         else
             searchCompany();
@@ -67,7 +69,7 @@ const CompanyWrapper = () => {
 
     const clickSearchButton = () => {
         setFilter({...filter, page: 0});
-        if (companyName == ""){
+        if (companyName === ""){
             setSearchType("none");
             showCompany();
         }else{
@@ -92,38 +94,89 @@ const CompanyWrapper = () => {
         forwardButton: <IconButton onClick={()=>setPage(page+1)}><ArrowForwardIosIcon/></IconButton>
     }
     
+    const GetPageButton = () => {
+        console.log(pageElement)
+        if(page === 0 && company === []){
+            return null
+        } else if (company.length < 20){
+            return <div>{pageElement.backButton}{pageElement.page}</div>
+        } else if (page === 0){
+            return <div>{pageElement.page}{pageElement.forwardButton}</div>
+        } else {
+            return <div>{pageElement.backButton}{pageElement.page+pageElement.forwardButton}</div>
+        }
+    }
+
     return(
-        <div >
-            <div >
-                <TextField fullWidth name="companyName" label="CompanyName" onChange={handleChange} value={companyName}/>
-                <Button variant="contained" color="primary" onClick={clickSearchButton}>
-                    검색
-                </Button>
-                <TextField id="outlined-basic" type="number" name="employeesNum" onChange={handleChange} value={employeesNum} label="최소 직원수" variant="outlined" />
-                <TextField id="outlined-basic" type="number" name="foundingYear" onChange={handleChange} value={foundingYear} label="최대 창립년도" variant="outlined" />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            onChange={handleChange} 
-                            checked={isRecruit}
-                            name="isRecruit" 
-                            color="primary"
+        <center>
+            <Grid 
+                container
+                justify="center"
+                alignItems="center"
+                xs={6}
+            >
+                <Grid item xs={12} style={{marginBottom:10}}>
+                    <FormControl style={{width:"80%"}}>
+                        <TextField
+                            name="companyName"
+                            label="CompanyName"
+                            onChange={handleChange}
+                            value={companyName}
                         />
-                    }
-                    label="채용 진행중"
-                />
-                <Button variant="contained" color="primary" onClick={clickFilterButton}>
-                    필터
-                </Button>
-            </div>
+                        </FormControl>
+                    <FormControl style={{width:"10%", marginTop:'15px', marginLeft:'30px'}}>
+                        <Button variant="contained" color="primary" onClick={clickSearchButton}>
+                            검색
+                        </Button>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        id="outlined-size-small"
+                        type="number"
+                        name="employeesNum"
+                        onChange={handleChange}
+                        value={employeesNum}
+                        label="최소 직원수"
+                        variant="outlined"
+                        size="small"
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <TextField
+                        id="outlined-size-small"
+                        type="number"
+                        name="foundingYear"
+                        onChange={handleChange}
+                        value={foundingYear}
+                        label="최대 창립년도"
+                        variant="outlined"
+                        size="small"
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <FormControlLabel
+                        label="채용 진행중"
+                        labelPlacement="bottom"
+                        control={
+                            <Checkbox
+                                style={{padding:0}}
+                                // onChange={handleChange} 
+                                checked={isRecruit}
+                                name="isRecruit" 
+                                color="primary"
+                                size="small"
+                            />
+                        }
+                    />
+                    <Button variant="contained" color="primary" onClick={clickFilterButton}>
+                        필터
+                    </Button>
+                </Grid>
+            </Grid>
             <Company company={company}/>
-            {
-                (page === 0 && company === [])? null:
-                (company.length < 20)? pageElement.backButton+pageElement.page:
-                (page === 0)? pageElement.page+pageElement.forwardButton:
-                pageElement.backButton+pageElement.page+pageElement.forwardButton
-            }
-        </div>
+            <GetPageButton/>
+        </center>
     );
 }
 export default CompanyWrapper;

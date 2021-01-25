@@ -1,9 +1,9 @@
 import React from 'react';
-import { Header } from "./components";
 import { Footer } from "./components";
 import { useSelector } from 'react-redux';
 import { COMPANYFORM } from './store/modules/Form';
 import { CompanyWrapper, UserLikeCompanyWrapper } from './containers';
+import SideButtonWrapper from './containers/sideButtonWrapper/SideButtonWrapper';
 
 // const HOST = "kjh-projects.kro.kr"
 const HOST = "localhost"
@@ -15,7 +15,7 @@ const App = () => {
 
     return (
       <div className="App">
-        <Header/>
+        <SideButtonWrapper/>
           {companyForm === COMPANYFORM? <CompanyWrapper/> : <UserLikeCompanyWrapper/>}
         <Footer/>
       </div>
