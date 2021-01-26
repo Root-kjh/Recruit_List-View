@@ -4,6 +4,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import Modal from '@material-ui/core/Modal';
 import { BASE_URL } from '../../App';
+import "../../index.css"
+import { Grid } from "@material-ui/core";
 
 const Signup = props => {
 
@@ -39,18 +41,38 @@ const Signup = props => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         >
-            <form>
-                <h1>Sign up</h1>
-                <TextField id="standard-basic" label="UserName" name="userName" />
-                <TextField
-                id="standard-password-input"
-                label="Password"
-                type="password"
-                name="Password"
-                autoComplete="current-password"
-                />
-                <Button variant="contained" onClick={signup}>Signup</Button>
-            </form>
+            <center>
+                <form class="user_modal_form">
+                    <h1>Sign up</h1>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <TextField 
+                                fullWidth
+                                id="standard-basic" 
+                                label="UserName" 
+                                name="userName" 
+                            />
+                        </Grid>
+                    <TextField
+                    fullWidth
+                    id="standard-password-input"
+                    label="Password"
+                    type="password"
+                    name="Password"
+                    autoComplete="current-password"
+                    />
+                    <TextField
+                    fullWidth
+                    id="standard-password-input"
+                    label="Password Retype"
+                    type="password"
+                    name="PasswordR"
+                    autoComplete="current-password"
+                    />
+                    <Button size="large" style={{margin:"10px auto"}} color="primary" variant="contained" onClick={signup}>Signup</Button>
+                    </Grid>
+                </form>
+            </center>
         </Modal>
     );
 };

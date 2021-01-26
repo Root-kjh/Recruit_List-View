@@ -95,8 +95,7 @@ const CompanyWrapper = () => {
     }
     
     const GetPageButton = () => {
-        console.log(pageElement)
-        if(page === 0 && company === []){
+        if(page === 0 && company.length < 20){
             return null
         } else if (company.length < 20){
             return <div>{pageElement.backButton}{pageElement.page}</div>
@@ -114,8 +113,9 @@ const CompanyWrapper = () => {
                 justify="center"
                 alignItems="center"
                 xs={6}
+                style={{marginTop:'5%'}}
             >
-                <Grid item xs={12} style={{marginBottom:10}}>
+                <Grid item xs={12} style={{marginBottom:20}}>
                     <FormControl style={{width:"80%"}}>
                         <TextField
                             name="companyName"
@@ -124,7 +124,7 @@ const CompanyWrapper = () => {
                             value={companyName}
                         />
                         </FormControl>
-                    <FormControl style={{width:"10%", marginTop:'15px', marginLeft:'30px'}}>
+                    <FormControl style={{width:"10%", marginTop:'15px', marginLeft:'25px'}}>
                         <Button variant="contained" color="primary" onClick={clickSearchButton}>
                             검색
                         </Button>
@@ -154,7 +154,7 @@ const CompanyWrapper = () => {
                         size="small"
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={2}>
                     <FormControlLabel
                         label="채용 진행중"
                         labelPlacement="bottom"
@@ -165,17 +165,20 @@ const CompanyWrapper = () => {
                                 checked={isRecruit}
                                 name="isRecruit" 
                                 color="primary"
-                                size="small"
                             />
                         }
                     />
+                </Grid>
+                <Grid item xs={2}>
                     <Button variant="contained" color="primary" onClick={clickFilterButton}>
                         필터
                     </Button>
                 </Grid>
             </Grid>
             <Company company={company}/>
-            <GetPageButton/>
+            <div style={{position:'absolute', bottom:'10%', left:0, right:0, justifyContent: 'center', alignItems: 'center'}}>
+                <GetPageButton/>
+            </div>
         </center>
     );
 }

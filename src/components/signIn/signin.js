@@ -7,7 +7,8 @@ import { BASE_URL } from '../../App';
 import { useDispatch } from "react-redux";
 import { change_jwt } from "../../store/modules/JWT";
 import { set_userLikeCompany } from "../../store/modules/UserLikeCompany";
-
+import "../../index.css"
+import { Grid } from "@material-ui/core";
 const Signin = props => {
 
     const dispatch = useDispatch()
@@ -57,18 +58,27 @@ const Signin = props => {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         >
-            <form>
-                <h1>Sign in</h1>
-                <TextField id="standard-basic" label="UserName" name="userName" />
-                <TextField
-                id="standard-password-input"
-                label="Password"
-                type="password"
-                name="Password"
-                autoComplete="current-password"
-                />
-                <Button variant="contained" onClick={signin}>Signin</Button>
-            </form>
+            <center>
+                <form className="user_modal_form">
+                    <h1>Sign in</h1>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <TextField id="standard-basic" fullWidth label="UserName" name="userName" />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <TextField
+                        fullWidth
+                        id="standard-password-input"
+                        label="Password"
+                        type="password"
+                        name="Password"
+                        autoComplete="current-password"
+                        />
+                        </Grid>
+                        <Button style={{margin:"10px auto"}} size="large" variant="contained" color="primary" onClick={signin}>Signin</Button>
+                    </Grid>
+                </form>
+            </center>
         </Modal>
     );
 }

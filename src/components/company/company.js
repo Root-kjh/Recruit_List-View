@@ -9,10 +9,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Typography from '@material-ui/core/Typography';
-import cookie from 'react-cookies'
 import axios from 'axios';
 import { useState } from "react";
 import { BASE_URL } from '../../App';
@@ -20,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { insert_userLikeCompany, delete_userLikeCompany } from "../../store/modules/UserLikeCompany";
 
 const Company = company =>{
-    console.log(company);
     const [copenList, setCopen] = useState([]);
     const [nopenList, setNopen] = useState([]);
     
@@ -105,61 +102,66 @@ const Company = company =>{
     }
 
     return(
-    <div>
+    <div style={{marginTop:"5%", width:"100%"}}>
         {company.company.map((com,i)=>{
-            return(<ExpansionPanel key={i}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            return(
+                <div style={{alignItems:"left"}}>
                     {
-                        (cookie.load('jwt')!=null)?
-                    <FormControlLabel
-                        control={<Checkbox checked={isUserLikeCompany(com.id)} value={com.id} onClick={(e)=>handleChange(e,com)}/>}
-                        label={com.companyName}
-                    />:
-                    <Typography>{com.companyName}</Typography>
+                        jwt != null?
+                            <Checkbox style={{float:"left", marginLeft:"5%"}} checked={isUserLikeCompany(com.id)} value={com.id} onClick={(e)=>handleChange(e,com)}/>:
+                            null
                     }
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <List>
-                        <ListItem>
-                            <ListItemText primary={"직원수 : "+com.employeesNum}/>
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText primary={"창립년도 : "+com.foundingYear}/>
-                        </ListItem>
-                        <ListItem button onClick={(e)=>handleNopen(e,i)}>
-                            <ListItemText primary="채용공고" />
-                                {isNopen(i) ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                            <Collapse in={isNopen(i)} timeout="auto" unmountOnExit>
-                                <List>
-                                    {com.recruitmentNotices.map((notice,j)=>{
-                                        return(
-                                            <ListItemLink key={j} href={notice.uri}>
-                                                <ListItemText  primary={notice.siteName}/>
-                                            </ListItemLink>
-                                        )
-                                    })}
-                                </List>
-                            </Collapse>
-                            <ListItem button value={i} onClick={(e)=>{handleCopen(e,i)}}>
-                            <ListItemText primary="기업정보" />
-                                {isCopen(i) ? <ExpandLess /> : <ExpandMore />}
-                        </ListItem>
-                            <Collapse in={isCopen(i)} timeout="auto" unmountOnExit>
-                                <List>
-                                    {com.companyInfos.map((info,j)=>{
-                                        return(
-                                            <ListItemLink key={j} href={info.uri}>
-                                                <ListItemText  primary={info.siteName}/>
-                                            </ListItemLink>
-                                        )
-                                    })}
-                                </List>
-                            </Collapse>
-                    </List>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>) 
-        })}
+                    <ExpansionPanel key={i} style={{width:"85%"}}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography>{com.companyName}</Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <List>
+                            <ListItem>
+                                <ListItemText primary={"직원수 : "+com.employeesNum}/>
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary={"창립년도 : "+com.foundingYear}/>
+                            </ListItem>
+                            <ListItem button onClick={(e)=>handleNopen(e,i)}>
+                                <ListItemText primary="채용공고" />
+                                    {isNopen(i) ? <ExpandLess /> : <ExpandMore />}
+                            </ListItem>
+                                <Collapse in={isNopen(i)} timeout="auto" unmountOnExit>
+                                    <List>
+                                        {
+                                        console.log(com.recruitmentNotices)
+                                        }
+                                        {
+                                        com.recruitmentNotices.map((notice,j)=>{
+                                            return(
+                                                <ListItemLink key={j} href={notice.uri}>
+                                                    <ListItemText  primary={notice.siteName}/>
+                                                </ListItemLink>
+                                            )
+                                        })}
+                                    </List>
+                                </Collapse>
+                                <ListItem button value={i} onClick={(e)=>{handleCopen(e,i)}}>
+                                <ListItemText primary="기업정보" />
+                                    {isCopen(i) ? <ExpandLess /> : <ExpandMore />}
+                            </ListItem>
+                                <Collapse in={isCopen(i)} timeout="auto" unmountOnExit>
+                                    <List>
+                                        {com.companyInfos.map((info,j)=>{
+                                            return(
+                                                <ListItemLink key={j} href={info.uri}>
+                                                    <ListItemText  primary={info.siteName}/>
+                                                </ListItemLink>
+                                            )
+                                        })}
+                                    </List>
+                                </Collapse>
+                        </List>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            </div> 
+        )})}
     </div>
     );
 }
