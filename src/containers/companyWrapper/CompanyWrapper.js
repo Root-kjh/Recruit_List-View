@@ -83,9 +83,12 @@ const CompanyWrapper = () => {
         setSearchType("filter");
     }
 
-    const handleChange = e => {
-        const [name, value] = e.target;
-        setFilter({...filter, [name]: value});
+    const handleChange = obj => {
+        if (obj.target.name === "isRecruit"){
+                setFilter({...filter, isRecruit: obj.target.checked})
+        }else{
+            setFilter({...filter, [obj.target.name]: obj.target.value});
+        }
     }
 
     const pageElement = {
@@ -161,7 +164,7 @@ const CompanyWrapper = () => {
                         control={
                             <Checkbox
                                 style={{padding:0}}
-                                // onChange={handleChange} 
+                                onChange={handleChange} 
                                 checked={isRecruit}
                                 name="isRecruit" 
                                 color="primary"
