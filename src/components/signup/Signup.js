@@ -10,12 +10,12 @@ import { Grid } from "@material-ui/core";
 const Signup = props => {
 
     const signup = () => {
-        const password=document.getElementsByName("password")[1];
-        const passwordR=document.getElementsByName("passwordR")[0];
+        const password=document.getElementsByName("Password")[0];
+        const passwordR=document.getElementsByName("PasswordR")[0];
         if (password.value === passwordR.value){
             axios.post(BASE_URL+"user/signup",{
                 "email": document.getElementsByName("Email")[0].value,
-                "userName": document.getElementsByName("username")[1].value,
+                "userName": document.getElementsByName("userName")[0].value,
                 "password": password.value
         }).then(() => {
             alert("회원가입 성공");
@@ -45,14 +45,18 @@ const Signup = props => {
                 <form class="user_modal_form">
                     <h1>Sign up</h1>
                     <Grid container>
-                        <Grid item xs={12}>
-                            <TextField 
-                                fullWidth
-                                id="standard-basic" 
-                                label="UserName" 
-                                name="userName" 
-                            />
-                        </Grid>
+                    <TextField 
+                        fullWidth
+                        id="standard-basic" 
+                        label="Email" 
+                        name="Email" 
+                    />
+                    <TextField 
+                        fullWidth
+                        id="standard-basic" 
+                        label="UserName" 
+                        name="userName" 
+                    />
                     <TextField
                     fullWidth
                     id="standard-password-input"
